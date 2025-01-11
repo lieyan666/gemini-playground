@@ -4,6 +4,11 @@
 
 import { Buffer } from "node:buffer";
 
+const SECRETS = {
+  API_KEY: process.env.API_KEY,
+  PASSWORD: process.env.PASSWORD
+};
+
 export default {
   async fetch (request) {
     if (request.method === "OPTIONS") {
@@ -34,6 +39,10 @@ export default {
         case pathname.endsWith("/models"):
           assert(request.method === "GET");
           return handleModels(apiKey)
+            .catch(errHandler);
+        case pathname.endsWith("/get-secret"):
+          assert(request.method === "POST");
+          return handleGetSecret(await request.json())
             .catch(errHandler);
         default:
           throw new HttpError("404 Not Found", 404);

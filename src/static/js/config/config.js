@@ -1,7 +1,18 @@
+/*
+ * @Author: Lieyan
+ * @Date: 2025-01-11 17:25:14
+ * @LastEditors: Lieyan
+ * @LastEditTime: 2025-01-11 17:30:09
+ * @FilePath: /gemini-playground/src/static/js/config/config.js
+ * @Description: 
+ * @Contact: QQ: 2102177341  Website: lieyan.space  Github: @lieyan666
+ * @Copyright: Copyright (c) 2025 by lieyanDevTeam, All Rights Reserved. 
+ */
 export const CONFIG = {
     API: {
         VERSION: 'v1alpha',
-        MODEL_NAME: 'models/gemini-2.0-flash-exp'
+        MODEL_NAME: 'models/gemini-2.0-flash-exp',
+        KEY: null
     },
     // You can change the system instruction to your liking
     SYSTEM_INSTRUCTION: {
@@ -20,4 +31,4 @@ export const CONFIG = {
     // }
   };
   
-  export default CONFIG; 
+  export default CONFIG;

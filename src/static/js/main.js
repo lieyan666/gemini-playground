@@ -243,13 +243,40 @@ async function resumeAudioContext() {
  * @returns {Promise<void>}
  */
 async function connectToWebsocket() {
-    if (!apiKeyInput.value) {
-        logMessage('Please input API Key', 'system');
-        return;
+    let apiKey = apiKeyInput.value;
+    
+    // Try to get API Key from workers secret if password is provided
+    if (!apiKey) {
+        const password = prompt('Please enter password to access API Key');
+        if (password) {
+            try {
+                const response = await fetch('/api/get-secret', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ password })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    apiKey = data.apiKey;
+                    apiKeyInput.value = apiKey;
+                } else {
+                    throw new Error('Invalid password');
+                }
+            } catch (error) {
+                logMessage(`Error: ${error.message}`, 'system');
+                return;
+            }
+        } else {
+            logMessage('Please input API Key or password', 'system');
+            return;
+        }
     }
 
     // Save values to localStorage
-    localStorage.setItem('gemini_api_key', apiKeyInput.value);
+    localStorage.setItem('gemini_api_key', apiKey);
     localStorage.setItem('gemini_voice', voiceSelect.value);
     localStorage.setItem('system_instruction', systemInstructionInput.value);
 
@@ -555,4 +582,3 @@ function stopScreenSharing() {
 
 screenButton.addEventListener('click', handleScreenShare);
 screenButton.disabled = true;
-  
